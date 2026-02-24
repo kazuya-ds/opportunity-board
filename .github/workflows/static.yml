@@ -10,24 +10,30 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps:deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      # This step "collects" your files into a single deployment bundle
-      - name: Prepare Deployment
+
+      # This step fixes the "README only" issue by moving files into a deployment root
+      - name: Prepare Deployment Bundle
         run: |
           mkdir public
           cp template/index.html public/
           cp template/style.css public/
           cp features/app.js public/
+          # Copy your CSV so the "Export" feature works live
+          cp opportunities.csv public/ || echo "No CSV found yet"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './public'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
