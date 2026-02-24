@@ -1,6 +1,9 @@
 # Student Opportunity Dashboard 
 
-A opportunity board showing opportunities for undergraduates, graduate students, and other people interested in graduated.
+A opportunity board showing opportunities for undergraduates, graduate students, and other people interested in opportunities.
+
+Visit website to check it out.
+https://kazuya-ds.github.io/opportunity-board/
 
 ## Features
 - **Filter:** Filter opportunities by eligibility and field.
