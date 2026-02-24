@@ -1,0 +1,24 @@
+name: Deploy Dashboard
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: pip install pandas openpyxl
+      - name: Update Data
+        run: python generate_opportunities.py
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add opportunities.csv
+          git commit -m "Automated data refresh" || echo "No changes"
+          git push
