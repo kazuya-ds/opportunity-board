@@ -1,24 +1,33 @@
-name: Deploy Dashboard
+name: Deploy Professional Dashboard
 on:
   push:
-    branches: [ main ]
+    branches: ["main"]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps:deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-      - name: Install dependencies
-        run: pip install pandas openpyxl
-      - name: Update Data
-        run: python generate_opportunities.py
-      - name: Commit and Push
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      # This step "collects" your files into a single deployment bundle
+      - name: Prepare Deployment
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          git add opportunities.csv
-          git commit -m "Automated data refresh" || echo "No changes"
-          git push
+          mkdir public
+          cp template/index.html public/
+          cp template/style.css public/
+          cp features/app.js public/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
