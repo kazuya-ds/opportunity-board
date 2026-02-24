@@ -1,0 +1,64 @@
+Turn to py for discord bot
+
+import discord
+from discord.ext import commands
+import pandas as pd
+import os
+
+# Set up intents (permissions)
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+def get_filtered_data(eligibility=None, field=None):
+    """Reads the local CSV and filters results."""
+    try:
+        df = pd.read_csv("opportunities.csv")
+        
+        if eligibility:
+            # Case-insensitive search for eligibility
+            df = df[df['Eligibility'].str.contains(eligibility, case=False, na=False)]
+        
+        if field:
+            # Case-insensitive search for field (e.g., Agriculture)
+            df = df[df['Field'].str.contains(field, case=False, na=False)]
+            
+        return df.head(5) # Return top 5 matches
+    except Exception as e:
+        print(f"Error reading data: {e}")
+        return pd.DataFrame()
+
+@bot.event
+async def on_ready():
+    print(f'System: {bot.user.name} is online and monitoring opportunities.')
+
+@bot.command(name="opps")
+async def opportunities(ctx, eligibility: str = None, field: str = None):
+    """
+    Usage: !opps Undergraduate Agriculture
+    """
+    await ctx.send(f"Searching for **{eligibility or 'any'}** roles in **{field or 'all fields'}**...")
+    
+    results = get_filtered_data(eligibility, field)
+    
+    if results.empty:
+        await ctx.send("No matches found. Try adjusting your tags (e.g., 'Undergraduate' or 'Agriculture').")
+        return
+
+    for _, row in results.iterrows():
+        embed = discord.Embed(
+            title=row['Name'],
+            description=row['Description'][:250] + "...",
+            color=0x002855 # UCM Blue
+        )
+        embed.add_field(name="Sponsor", value=row['Sponsor'], inline=True)
+        embed.add_field(name="Stipend", value=row['Stipend'], inline=True)
+        embed.add_field(name="Deadline", value=row['Deadline'], inline=True)
+        embed.add_field(name="Apply", value=f"[Application Link]({row['App_Link']})", inline=False)
+        embed.set_footer(text=f"Tag: {row['Field']} | Eligibility: {row['Eligibility']}")
+        
+        await ctx.send(embed=embed)
+
+# Replace 'YOUR_BOT_TOKEN' with your actual token from the Discord Developer Portal
+# bot.run('YOUR_BOT_TOKEN')
