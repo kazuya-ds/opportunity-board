@@ -4,41 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
-    <title>UC Merced | Student Opportunity Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <title>Opportunity Dashboard | 2026</title>
 </head>
 <body>
-    <header class="ucm-header">
-        <div class="ucm-container">
-            <span class="brand-accent">University of California, Merced</span>
-            <h1>Opportunity Dashboard</h1>
-            <nav class="metadata-info">
-                <span>Format: Open Data (CSV/XLSX)</span>
-                <span>Version: 2026.1.0</span>
-            </nav>
+    <div class="logo-bar">Student Opportunities</div>
+
+    <header class="ucm-hero-block">
+        <div class="container hero-flex">
+            <div class="title-section">
+                <h1>Opportunity Dashboard</h1>
+                <p class="curated-text">Currated opportunites for research, internships, fellowships, and more to support building a better future.</p>
+            </div>
+            <div class="a11y-toolbar">
+                <a href="mailto:admin@ucmerced.edu" class="btn-a11y contact-btn">Contact Admin</a>
+                <button onclick="toggleDarkMode()" id="theme-btn" class="btn-a11y">Dark Mode</button>
+                <button onclick="toggleSpeech()" id="speech-btn" class="btn-a11y">Enable Speech</button>
+                <button onclick="exportToCSV()" class="btn-a11y">Export CSV</button>
+            </div>
         </div>
     </header>
 
-    <main class="ucm-container">
-        <div id="opportunity-grid">
-            <article class="opportunity-card">
-                <header class="card-meta">
-                    <span class="field-tag">Tech & Agriculture</span>
-                    <span class="date-tag">Deadline: March 16, 2026</span>
-                </header>
-                <h2>IoT4Ag Summer Internship</h2>
-                <p class="sponsor-text">Sponsor: Internet of Things for Precision Agriculture (IoT4Ag)</p>
-                
-                <div class="data-points">
-                    <div class="data-item"><strong>Stipend:</strong> $8,000</div>
-                    <div class="data-item"><strong>Duration:</strong> 10 Weeks</div>
-                    <div class="data-item"><strong>Location:</strong> In-Person (UC Merced)</div>
-                </div>
+    <div class="container dashboard-wrapper">
+        <aside class="filter-card">
+            <h2 class="filter-title">Eligibility</h2>
+            <div class="filter-group">
+                <label class="checkbox-item"><input type="checkbox" checked> Undergraduate</label>
+                <label class="checkbox-item"><input type="checkbox"> Graduate</label>
+                <label class="checkbox-item"><input type="checkbox"> Recent Graduate</label>
+            </div>
+            <h2 class="filter-title">Field</h2>
+            <div class="filter-group">
+                <label class="checkbox-item"><input type="checkbox" checked> Technology</label>
+                <label class="checkbox-item"><input type="checkbox" checked> Agriculture</label>
+            </div>
+        </aside>
 
-                <p class="description">Focus: Physical systems, digital infrastructure, and cybersecurity. Includes SURI participation.</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdj4mJHtILeo9b-ul_5t8roi2idBShMqdCRdTpRMwnGfNZ5-Q/viewform?usp=header" class="btn-primary">Access Application</a>
+        <main class="dashboard-grid" id="opportunity-grid">
+            <article class="listing-item">
+                <div class="listing-content">
+                    <header class="card-meta">
+                        <span class="badge-field">Tech & Agriculture</span>
+                        <span class="badge-eligibility">Undergraduate</span>
+                    </header>
+                    <h2>IoT4Ag Summer Internship</h2>
+                    <p class="sponsor-text">Internet of Things for Precision Agriculture (IoT4Ag)</p>
+                    <p class="description">10-week full-time (June 1 - July 31). Focus: Physical systems, digital infrastructure, and cybersecurity.</p>
+                </div>
+                <div class="listing-stats">
+                    <div class="stat-box"><strong>Stipend:</strong> $8,000</div>
+                    <div class="stat-box"><strong>Deadline:</strong> March 16</div>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdj4mJHtILeo9b-ul_5t8roi2idBShMqdCRdTpRMwnGfNZ5-Q/viewform" class="btn-primary" target="_blank">View Application</a>
+                </div>
             </article>
-        </div>
-    </main>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
